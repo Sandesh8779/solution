@@ -16,7 +16,7 @@ const MainLayout = ({ children }) => (
     <main style={{ flex: 1 }}>{children}</main>
     <ChatWidget />
     <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'var(--color-bg-primary)', borderTop: '1px solid var(--color-border)' }}>
-      <p style={{ color: 'var(--color-text-secondary)' }}>&copy; 2025 Solution For U. All rights reserved.</p>
+      <p style={{ color: 'var(--color-text-secondary)' }}>&copy; 2026 Solution For U. All rights reserved.</p>
     </footer>
   </div>
 );

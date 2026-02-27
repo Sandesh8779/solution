@@ -18,6 +18,12 @@ const Navbar = () => {
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
             }
+            @keyframes colorShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
         `;
         document.head.appendChild(style);
         return () => document.head.removeChild(style);
@@ -77,11 +83,48 @@ const Navbar = () => {
         padding: window.innerWidth <= 768 ? '0.5rem' : '0'
     });
 
+    const logoIconStyle = {
+        minWidth: window.innerWidth <= 768 ? 32 : 36,
+        width: window.innerWidth <= 768 ? 32 : 36,
+        height: window.innerWidth <= 768 ? 32 : 36,
+        background: 'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe, #00f2fe, #43e97b, #667eea)',
+        backgroundSize: '400% 400%',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: '900',
+        fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
+        color: '#ffffff',
+        boxShadow: '0 3px 10px rgba(102, 126, 234, 0.3)',
+        fontFamily: '"Righteous", cursive',
+        position: 'relative',
+        overflow: 'hidden',
+        flexShrink: 0,
+        textShadow: '0 1px 3px rgba(0,0,0,0.2)',
+        animation: 'colorShift 15s ease infinite'
+    };
+
+    const logoShineStyle = {
+        position: 'absolute',
+        top: '-50%',
+        left: '-50%',
+        width: '200%',
+        height: '200%',
+        background: 'linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
+        animation: 'shine 5s ease-in-out infinite',
+        pointerEvents: 'none'
+    };
+
     return (
         <nav style={navStyle}>
-            <Link to="/" style={logoStyle}>
-                <div style={{ width: window.innerWidth <= 768 ? 20 : 24, height: window.innerWidth <= 768 ? 20 : 24, background: 'var(--color-primary)', borderRadius: 6 }}></div>
-                {window.innerWidth <= 768 ? 'SFU' : 'Solution For U'}
+            <Link to="/" style={{...logoStyle, textDecoration: 'none'}}>
+                <div style={logoIconStyle}>
+                    <span style={{ position: 'relative', zIndex: 1, color: '#ffffff !important', WebkitTextFillColor: '#ffffff' }}>S!</span>
+                </div>
+                <span style={location.pathname === '/' ? {} : { color: 'var(--color-primary)' }}>
+                    {window.innerWidth <= 768 ? 'SFU' : 'Solution For U'}
+                </span>
             </Link>
 
             <div style={linkContainerStyle}>

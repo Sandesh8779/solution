@@ -15,6 +15,19 @@ export const signIn = async (email, password) => {
     const emailLower = email.toLowerCase();
     console.log('Attempting login with:', emailLower);
     
+    // Offline demo users (remove this when Supabase is working)
+    const demoUsers = [
+      { id: 1, email: 'admin@solution.com', password: 'admin123', name: 'Admin User', role: 'admin' },
+      { id: 2, email: 'user@solution.com', password: 'user123', name: 'Regular User', role: 'user' },
+      { id: 3, email: 'worker@solution.com', password: 'worker123', name: 'Worker User', profiletype: 1 }
+    ];
+    
+    const demoUser = demoUsers.find(u => u.email === emailLower && u.password === password);
+    if (demoUser) {
+      console.log('Demo login successful:', demoUser);
+      return { data: demoUser, error: null };
+    }
+    
     // Check in users table first
     const { data: userData, error: userError } = await supabase
       .from('users')
@@ -47,7 +60,10 @@ export const signIn = async (email, password) => {
     
   } catch (error) {
     console.error('Login error:', error);
-    return { data: null, error: { message: 'Login failed' } };
+    if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
+      return { data: null, error: { message: 'Cannot connect to server. Supabase may be down. Please try again later.' } };
+    }
+    return { data: null, error: { message: 'Login failed. Please check your connection.' } };
   }
 }
 

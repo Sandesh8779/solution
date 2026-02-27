@@ -221,36 +221,92 @@ const Home = () => {
                     <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '3rem' }}>Top Rated Professionals</h2>
 
                     <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} style={{
-                                backgroundColor: 'white',
-                                borderRadius: 'var(--radius-lg)',
-                                padding: '1.5rem',
-                                boxShadow: 'var(--shadow-md)',
-                                display: 'flex',
-                                gap: '1rem'
-                            }}>
-                                <img 
-                                    src={`https://i.pravatar.cc/150?img=${i}`} 
-                                    alt="Professional"
-                                    style={{ 
-                                        width: 80, 
-                                        height: 80, 
-                                        borderRadius: 'var(--radius-md)', 
-                                        objectFit: 'cover'
-                                    }}
-                                />
-                                <div>
-                                    <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Professional Name</h3>
-                                    <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Electrician • 5 years exp</p>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
-                                        <Star size={16} fill="currentColor" />
-                                        <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.9</span>
-                                        <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(120 reviews)</span>
-                                    </div>
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: 'var(--radius-lg)',
+                            padding: '1.5rem',
+                            boxShadow: 'var(--shadow-md)',
+                            display: 'flex',
+                            gap: '1rem'
+                        }}>
+                            <img 
+                                src="https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3" 
+                                alt="Chinnu"
+                                style={{ 
+                                    width: 80, 
+                                    height: 80, 
+                                    borderRadius: 'var(--radius-md)', 
+                                    objectFit: 'cover'
+                                }}
+                            />
+                            <div>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Chinnu</h3>
+                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Carpenter • 4 years exp</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
+                                    <Star size={16} fill="currentColor" />
+                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.7</span>
+                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(102 reviews)</span>
                                 </div>
                             </div>
-                        ))}
+                        </div>
+
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: 'var(--radius-lg)',
+                            padding: '1.5rem',
+                            boxShadow: 'var(--shadow-md)',
+                            display: 'flex',
+                            gap: '1rem'
+                        }}>
+                            <img 
+                                src="https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" 
+                                alt="Ammu"
+                                style={{ 
+                                    width: 80, 
+                                    height: 80, 
+                                    borderRadius: 'var(--radius-md)', 
+                                    objectFit: 'cover'
+                                }}
+                            />
+                            <div>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Ammu</h3>
+                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Plumber • 3 years exp</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
+                                    <Star size={16} fill="currentColor" />
+                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.6</span>
+                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(89 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: 'var(--radius-lg)',
+                            padding: '1.5rem',
+                            boxShadow: 'var(--shadow-md)',
+                            display: 'flex',
+                            gap: '1rem'
+                        }}>
+                            <img 
+                                src="https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" 
+                                alt="Banu"
+                                style={{ 
+                                    width: 80, 
+                                    height: 80, 
+                                    borderRadius: 'var(--radius-md)', 
+                                    objectFit: 'cover'
+                                }}
+                            />
+                            <div>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Banu</h3>
+                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Electrician • 5 years exp</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
+                                    <Star size={16} fill="currentColor" />
+                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.9</span>
+                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(156 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

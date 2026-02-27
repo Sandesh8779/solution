@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         const { data, error } = await signIn(email, password);
         if (error) {
-            return { success: false, message: 'Invalid email or password' };
+            return { success: false, message: error.message || 'Invalid email or password' };
         }
         
         const userData = {
