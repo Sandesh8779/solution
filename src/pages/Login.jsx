@@ -73,8 +73,35 @@ const Login = () => {
     };
 
     return (
-        <div style={containerStyle}>
-            <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Welcome Back</h1>
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundImage: 'url("https://img.freepik.com/free-photo/3d-render-grunge-room-interior_1048-6280.jpg?2")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            position: 'relative'
+        }}>
+            {/* Overlay */}
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                zIndex: 0
+            }} />
+
+            {/* Login Form */}
+            <div style={{
+                ...containerStyle,
+                position: 'relative',
+                zIndex: 1,
+                margin: '2rem'
+            }}>
+                <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Welcome Back</h1>
             <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
                 Login to access your account
             </p>
@@ -151,6 +178,7 @@ const Login = () => {
 
             <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
                 <Link to="/forgot-password" style={{ color: 'var(--color-primary)', fontWeight: 600 }}>Forgot Password?</Link>
+            </div>
             </div>
         </div>
     );
