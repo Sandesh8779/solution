@@ -269,7 +269,7 @@ const Home = () => {
                                 }}
                             />
                             <div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Ammu</h3>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Rash Bro</h3>
                                 <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Plumber • 3 years exp</p>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
                                     <Star size={16} fill="currentColor" />
@@ -298,7 +298,7 @@ const Home = () => {
                                 }}
                             />
                             <div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Banu</h3>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Ammu Bhai</h3>
                                 <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Electrician • 5 years exp</p>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
                                     <Star size={16} fill="currentColor" />
