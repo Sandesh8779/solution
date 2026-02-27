@@ -101,7 +101,7 @@ const Login = () => {
                 zIndex: 1,
                 margin: '2rem'
             }}>
-                <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Welcome Back</h1>
+                <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Welcome Again, Friend!</h1>
             <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
                 Login to access your account
             </p>
