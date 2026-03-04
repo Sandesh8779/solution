@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
-import { getUsers, getWorkers, getRequests, assignWorkerToRequest, updateRequest } from '../services/supabase';
-import { FileText, Users, Calendar, MapPin, Phone, User, BarChart3, TrendingUp, Briefcase, CheckCircle, Eye, UserCheck, ClipboardCheck } from 'lucide-react';
+import { getUsers, getWorkers, getRequests, assignWorkerToRequest, updateRequest, getContactMessages } from '../services/supabase';
+import { FileText, Users, Calendar, MapPin, Phone, User, BarChart3, TrendingUp, Briefcase, CheckCircle, Eye, UserCheck, ClipboardCheck, MessageCircle, Mail, Clock } from 'lucide-react';
 import NotificationBanner from '../components/NotificationBanner';
 
 const AdminDashboard = () => {
@@ -14,6 +14,18 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState({ totalUsers: 0, totalWorkers: 0, totalRequests: 0, pendingRequests: 0 });
     const [loading, setLoading] = useState(true);
     const [modalMedia, setModalMedia] = useState(null);
+    const [contactMessages, setContactMessages] = useState([]);
+
+    useEffect(() => {
+        // Load contact messages from database when messages tab is active
+        if (activeTab === 'messages') {
+            getContactMessages().then(messages => {
+                setContactMessages(messages);
+            }).catch(error => {
+                console.error('Error loading messages:', error);
+            });
+        }
+    }, [activeTab]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -50,6 +62,7 @@ const AdminDashboard = () => {
 
     const sidebarItems = [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+        { id: 'messages', label: 'Contact Messages', icon: MessageCircle },
         { id: 'requests', label: 'User Requests', icon: FileText },
         { id: 'assignments', label: 'Work Assignments', icon: UserCheck },
         { id: 'verification', label: 'Work Verification', icon: CheckCircle },
@@ -140,6 +153,61 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                )}
+
+                {/* Contact Messages Tab */}
+                {activeTab === 'messages' && (
+                    <div>
+                        <h1 style={{ marginBottom: '1.5rem', textAlign: 'left' }}>Contact Messages</h1>
+                        {contactMessages.length === 0 ? (
+                            <p style={{ textAlign: 'left', color: 'var(--color-text-secondary)' }}>No messages found</p>
+                        ) : (
+                            <div style={{ display: 'grid', gap: '1rem' }}>
+                                {contactMessages.map((msg) => (
+                                    <div key={msg.id} style={{
+                                        padding: '1.5rem',
+                                        backgroundColor: 'white',
+                                        border: '1px solid var(--color-border)',
+                                        borderRadius: 'var(--radius-md)',
+                                        boxShadow: 'var(--shadow-sm)'
+                                    }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
+                                            <h3 style={{ margin: 0, color: 'var(--color-primary)' }}>{msg.subject}</h3>
+                                            <span style={{
+                                                padding: '0.25rem 0.75rem',
+                                                borderRadius: 'var(--radius-full)',
+                                                fontSize: '0.8rem',
+                                                backgroundColor: '#dbeafe',
+                                                color: '#1e40af'
+                                            }}>
+                                                {new Date(msg.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <User size={16} />
+                                                <span>{msg.name}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <Mail size={16} />
+                                                <span>{msg.email}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <Clock size={16} />
+                                                <span>{new Date(msg.created_at).toLocaleTimeString()}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style={{ padding: '1rem', backgroundColor: 'var(--color-bg-primary)', borderRadius: 'var(--radius-sm)' }}>
+                                            <strong>Message:</strong>
+                                            <p style={{ margin: '0.5rem 0 0 0', lineHeight: '1.6' }}>{msg.message}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 

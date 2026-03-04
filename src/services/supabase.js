@@ -183,3 +183,27 @@ export const assignWorkerToRequest = async (requestId, workerId) => {
   if (error) throw error
   return data
 }
+
+export const createContactMessage = async (messageData) => {
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .insert([{
+      name: messageData.name,
+      email: messageData.email,
+      subject: messageData.subject,
+      message: messageData.message,
+      created_at: new Date().toISOString()
+    }])
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export const getContactMessages = async () => {
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .select('*')
+    .order('created_at', { ascending: false })
+  return data || []
+}

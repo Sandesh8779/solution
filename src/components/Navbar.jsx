@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, User, Briefcase, Settings, LogIn, LogOut } from 'lucide-react';
+import { Home, User, Briefcase, Settings, LogIn, LogOut, Info, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import NotificationIcon from './NotificationIcon';
 import React from 'react';
@@ -23,7 +23,7 @@ const Navbar = () => {
                 50% { background-position: 100% 50%; }
                 100% { background-position: 0% 50%; }
             }
-            @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Righteous&family=Lobster&family=Pacifico&family=Dancing+Script:wght@700&family=Great+Vibes&family=Satisfy&family=Allura&family=Caveat:wght@700&display=swap');
         `;
         document.head.appendChild(style);
         return () => document.head.removeChild(style);
@@ -61,7 +61,7 @@ const Navbar = () => {
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem',
-        fontFamily: 'var(--font-heading)'
+        fontFamily: '"Caveat", cursive'
     };
 
     const linkContainerStyle = {
@@ -78,9 +78,23 @@ const Navbar = () => {
         textDecoration: 'none',
         color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)',
         fontWeight: active ? '600' : '500',
-        transition: 'color 0.2s',
+        transition: 'all 0.3s ease',
         fontSize: window.innerWidth <= 768 ? '0.85rem' : '1rem',
-        padding: window.innerWidth <= 768 ? '0.5rem' : '0'
+        padding: window.innerWidth <= 768 ? '0.5rem' : '0.5rem 1rem',
+        borderRadius: '20px',
+        backgroundColor: active ? 'rgba(102, 126, 234, 0.1)' : 'transparent'
+    });
+
+    const getHoverStyle = (active) => ({
+        transform: 'scale(1.15)',
+        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+        color: active ? 'var(--color-primary)' : 'var(--color-primary)'
+    });
+
+    const getLeaveStyle = (active) => ({
+        transform: 'scale(1)',
+        backgroundColor: active ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
+        color: active ? 'var(--color-primary)' : 'var(--color-text-secondary)'
     });
 
     const logoIconStyle = {
@@ -97,7 +111,7 @@ const Navbar = () => {
         fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
         color: '#ffffff',
         boxShadow: '0 3px 10px rgba(102, 126, 234, 0.3)',
-        fontFamily: '"Righteous", cursive',
+        fontFamily: '"Kaushan Script", cursive',
         position: 'relative',
         overflow: 'hidden',
         flexShrink: 0,
@@ -116,48 +130,67 @@ const Navbar = () => {
         pointerEvents: 'none'
     };
 
+
+
     return (
         <nav style={navStyle}>
-            <Link to="/" style={{...logoStyle, textDecoration: 'none'}}>
+            <a href="/" style={{...logoStyle, textDecoration: 'none'}}>
                 <div style={logoIconStyle}>
                     <span style={{ position: 'relative', zIndex: 1, color: '#ffffff !important', WebkitTextFillColor: '#ffffff' }}>S!</span>
                 </div>
                 <span style={location.pathname === '/' ? {} : { color: 'var(--color-primary)' }}>
                     {window.innerWidth <= 768 ? 'SFU' : 'Solution For U'}
                 </span>
-            </Link>
+            </a>
 
             <div style={linkContainerStyle}>
                 {(!user || (user.role !== 'admin' && user.role !== 'worker')) && (
-                    <Link to="/" style={linkStyle(isActive('/'))}>
+                    <a href="/" style={linkStyle(isActive('/'))} 
+                        onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(isActive('/')))} 
+                        onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(isActive('/')))}>
                         <Home size={18} />
                         Home
-                    </Link>
+                    </a>
                 )}
+                <a href="/about" style={linkStyle(isActive('/about'))} 
+                    onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(isActive('/about')))} 
+                    onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(isActive('/about')))}>
+                    <MessageCircle size={window.innerWidth <= 768 ? 16 : 18} />
+                    About Us
+                </a>
                 {user ? (
                     <>
                         {user.role === 'admin' ? (
-                            <Link to="/admin" style={linkStyle(isActive('/admin'))}>
+                            <a href="/admin" style={linkStyle(isActive('/admin'))} 
+                                onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(isActive('/admin')))} 
+                                onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(isActive('/admin')))}>
                                 <User size={window.innerWidth <= 768 ? 16 : 18} />
                                 {window.innerWidth <= 768 ? '' : 'Admin Panel'}
-                            </Link>
+                            </a>
                         ) : user.role === 'user' ? (
-                            <Link to="/user/dashboard" style={linkStyle(isActive('/user/dashboard'))}>
+                            <a href="/user/dashboard" style={linkStyle(isActive('/user/dashboard'))} 
+                                onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(isActive('/user/dashboard')))} 
+                                onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(isActive('/user/dashboard')))}>
                                 <User size={window.innerWidth <= 768 ? 16 : 18} />
                                 {window.innerWidth <= 768 ? '' : 'Dashboard'}
-                            </Link>
+                            </a>
                         ) : null}
                         <NotificationIcon />
-                        <button onClick={() => { logout(); navigate('/login'); }} style={{ ...linkStyle(false), cursor: 'pointer', background: 'none', border: 'none' }}>
+                        <button onClick={() => { logout(); navigate('/login'); }} 
+                            style={{ ...linkStyle(false), cursor: 'pointer', background: 'none', border: 'none' }} 
+                            onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(false))} 
+                            onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(false))}>
                             <LogOut size={window.innerWidth <= 768 ? 16 : 18} />
                             {window.innerWidth <= 768 ? '' : 'Logout'}
                         </button>
                     </>
                 ) : (
-                    <Link to="/login" style={{ ...linkStyle(isActive('/login')), color: 'var(--color-primary)' }}>
+                    <a href="/login" style={linkStyle(isActive('/login'))} 
+                        onMouseEnter={(e) => Object.assign(e.currentTarget.style, getHoverStyle(isActive('/login')))} 
+                        onMouseLeave={(e) => Object.assign(e.currentTarget.style, getLeaveStyle(isActive('/login')))}>
                         <LogIn size={window.innerWidth <= 768 ? 16 : 18} />
                         {window.innerWidth <= 768 ? '' : 'Login'}
-                    </Link>
+                    </a>
                 )}
             </div>
         </nav>

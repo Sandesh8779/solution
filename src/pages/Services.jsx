@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../services/mockData';
 
 const Services = () => {
+    const [searchParams] = useSearchParams();
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const searchQuery = searchParams.get('search');
+        if (searchQuery) {
+            setSearchTerm(searchQuery);
+        }
+    }, [searchParams]);
 
     const filteredServices = SERVICE_CATEGORIES.filter(service =>
         service.name.toLowerCase().includes(searchTerm.toLowerCase())

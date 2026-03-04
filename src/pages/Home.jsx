@@ -122,6 +122,22 @@ const Home = () => {
                             style={inputStyle}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    if (searchTerm.trim()) {
+                                        const matchedCategories = SERVICE_CATEGORIES.filter(cat => 
+                                            cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+                                        );
+                                        if (matchedCategories.length > 0) {
+                                            window.location.href = `/service/${matchedCategories[0].id}`;
+                                        } else {
+                                            alert(`No services found for "${searchTerm}". Try searching for: Electrician, Plumber, Carpenter, Cleaner, Painter, Repair`);
+                                        }
+                                    } else {
+                                        alert('Please enter a service type to search');
+                                    }
+                                }
+                            }}
                         />
                         <button 
                             className="btn btn-primary" 
