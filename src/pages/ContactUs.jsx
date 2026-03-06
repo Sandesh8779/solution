@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { createContactMessage } from '../services/supabase';
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({
@@ -14,13 +15,20 @@ const ContactUs = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => {
-            setSubmitted(false);
-            setFormData({ name: '', email: '', subject: '', message: '' });
-        }, 3000);
+        
+        try {
+            await createContactMessage(formData);
+            setSubmitted(true);
+            setTimeout(() => {
+                setSubmitted(false);
+                setFormData({ name: '', email: '', subject: '', message: '' });
+            }, 3000);
+        } catch (error) {
+            console.error('Error saving message:', error);
+            alert('Failed to send message. Please try again.');
+        }
     };
 
     const containerStyle = {

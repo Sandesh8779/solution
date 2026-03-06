@@ -10,38 +10,45 @@ const TestimonialsSlider = () => {
     const testimonials = [
         {
             id: 1,
-            rating: 4,
-            date: '10th Nov',
-            text: 'Olx has worked very well for me. I am very happy with your services and would like to give this experience a high rating. Thank you!',
-            name: 'Mohd Sakib'
+            rating: 5,
+            date: '23rd Jul',
+            text: 'The platform is user-friendly and helps me find trusted service providers like electricians and plumbers quickly. Thank you!',
+            name: 'Anjali G'
         },
         {
             id: 2,
             rating: 5,
-            date: '20th Oct',
-            text: 'It is a very good application for buying and selling your second hand products. I sold my Car, Dhokla machine and many things here I also purchased many goods from here, I love to use this application. It is a proud product of #India.',
-            name: 'Divyaraj Champavat'
+            date: '5th Aug',
+            text: 'This system makes booking home services very easy and fast. I can schedule a technician within minutes.',
+            name: 'Shivani P'
         },
         {
             id: 3,
             rating: 5,
-            date: '7th Oct',
-            text: 'Wonderful app if you are in a big city. Very easy interface, just need to be precise to the probable customers and it will be a good experience.',
-            name: 'Rajvir Jhala'
+            date: '3rd Nov',
+            text: 'The rating and review section helps me choose the best service provider based on other users’ experiences.',
+            name: 'Suhas Motagi'
         },
         {
             id: 4,
             rating: 5,
             date: '15th Sep',
             text: 'Great platform for finding reliable professionals. The service quality exceeded my expectations!',
-            name: 'Priya Sharma'
+            name: 'Appu Veerabhadrappa'
         },
         {
             id: 5,
             rating: 4,
-            date: '3rd Sep',
+            date: '4th Jun',
             text: 'Quick response and professional service. Highly recommend for home repairs and maintenance.',
-            name: 'Amit Kumar'
+            name: 'Abhishek B'
+        },
+        {
+            id: 6,
+            rating: 5,
+            date: '20th Sep',
+            text: 'This website improves convenience, saves time, and provides a reliable platform for users to easily book and manage home services online.',
+            name: 'Amaresh VD'
         }
     ];
 
@@ -70,7 +77,7 @@ const TestimonialsSlider = () => {
                 if (prev >= testimonials.length - 3) return 0;
                 return prev + 1;
             });
-        }, 2000);
+        }, 4000);
         return () => clearInterval(interval);
     }, [testimonials.length]);
 
@@ -141,7 +148,7 @@ const TestimonialsSlider = () => {
                         <p style={{ color: '#374151', fontSize: '15px', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
                             {testimonial.text}
                         </p>
-                        <p style={{ fontWeight: 600, color: '#111827', margin: 0 }}>
+                        <p style={{ fontWeight: 600, color: '#111827', margin: 0, fontSize: '18px' }}>
                             {testimonial.name}
                         </p>
                     </div>
@@ -185,7 +192,7 @@ const ProfessionalsSlider = () => {
             id: 1,
             name: 'Chinnu',
             role: 'Carpenter',
-            experience: '4 years exp',
+            experience: '3 years exp',
             rating: 4.7,
             reviews: 62,
             image: 'https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3'
@@ -194,7 +201,7 @@ const ProfessionalsSlider = () => {
             id: 2,
             name: 'Rash Bro',
             role: 'Plumber',
-            experience: '3 years exp',
+            experience: '4 years exp',
             rating: 4.6,
             reviews: 89,
             image: 'https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'
@@ -203,7 +210,7 @@ const ProfessionalsSlider = () => {
             id: 3,
             name: 'Ammu Bhai',
             role: 'Electrician',
-            experience: '5 years exp',
+            experience: '3 years exp',
             rating: 4.9,
             reviews: 56,
             image: 'https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247'
@@ -212,10 +219,10 @@ const ProfessionalsSlider = () => {
             id: 4,
             name: 'Munna',
             role: 'Painter',
-            experience: '6 years exp',
+            experience: '2 years exp',
             rating: 4.8,
             reviews: 34,
-            image: 'https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3'
+            image: 'https://th.bing.com/th/id/OIP.gtWBWZYXPKW4SF6PLFJwwgHaHa?w=208&h=208&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3'
         },
         {
             id: 5,
@@ -224,16 +231,16 @@ const ProfessionalsSlider = () => {
             experience: '2 years exp',
             rating: 4.5,
             reviews: 28,
-            image: 'https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'
+            image: 'https://th.bing.com/th/id/OIP.7-n5XDAL5mMcTzd-G3ydpAHaHa?w=163&h=150&c=6&o=7&dpr=1.3&pid=1.7&rm=3'
         },
         {
             id: 6,
             name: 'Basaya',
             role: 'AC Repair',
-            experience: '7 years exp',
+            experience: '1 years exp',
             rating: 4.9,
             reviews: 12,
-            image: 'https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247'
+            image: 'https://tse2.mm.bing.net/th/id/OIP.aBaoy7hPqrk6vZQJ9NVlUwAAAA?pid=ImgDet&w=184&h=195&c=7&dpr=1.3&o=7&rm=3'
         }
     ];
 
@@ -262,7 +269,7 @@ const ProfessionalsSlider = () => {
                 if (prev >= professionals.length - 3) return 0;
                 return prev + 1;
             });
-        }, 2000);
+        }, 3000);
         return () => clearInterval(interval);
     }, [professionals.length]);
 

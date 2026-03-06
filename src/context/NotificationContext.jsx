@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useAuth } from './AuthContext';
-import { getRequests } from '../services/supabase';
+import { getRequests, getContactMessages } from '../services/supabase';
 import PopupNotification from '../components/PopupNotification';
 
 const NotificationContext = createContext(null);
@@ -23,6 +23,9 @@ export const NotificationProvider = ({ children }) => {
                     const pendingRequests = requests.filter(r => r.status === 'pending');
                     const rejectedRequests = requests.filter(r => r.status === 'rejected');
                     
+                    // Get contact messages
+                    const contactMessages = await getContactMessages();
+                    
                     const newNotifications = [
                         ...pendingRequests.map(request => ({
                             id: `request-${request.id}`,
@@ -40,6 +43,15 @@ export const NotificationProvider = ({ children }) => {
                             message: `${request.service_type} request needs reassignment`,
                             timestamp: new Date(request.rejected_at || request.updated_at),
                             data: request,
+                            read: false
+                        })),
+                        ...contactMessages.map(msg => ({
+                            id: `contact-${msg.id}`,
+                            type: 'contact_message',
+                            title: 'New Contact Message',
+                            message: `${msg.name} sent a message: ${msg.subject}`,
+                            timestamp: new Date(msg.created_at),
+                            data: msg,
                             read: false
                         }))
                     ];
@@ -123,7 +135,7 @@ export const NotificationProvider = ({ children }) => {
             {children}
             {showPopup && notifications.length > 0 && (
                 <PopupNotification 
-                    message={`${notifications.length} new service request${notifications.length > 1 ? 's' : ''} waiting for assignment`}
+                    message={`${notifications.length} new notification${notifications.length > 1 ? 's' : ''} - Check your dashboard`}
                     onClose={() => setShowPopup(false)}
                 />
             )}

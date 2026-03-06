@@ -62,7 +62,7 @@ const AdminDashboard = () => {
 
     const sidebarItems = [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-        { id: 'messages', label: 'Contact Messages', icon: MessageCircle },
+        { id: 'messages', label: 'Contact Messages', icon: MessageCircle, badge: contactMessages.length },
         { id: 'requests', label: 'User Requests', icon: FileText },
         { id: 'assignments', label: 'Work Assignments', icon: UserCheck },
         { id: 'verification', label: 'Work Verification', icon: CheckCircle },
@@ -99,11 +99,29 @@ const AdminDashboard = () => {
                                 alignItems: 'center',
                                 gap: window.innerWidth <= 768 ? '0.5rem' : '0.75rem',
                                 fontSize: window.innerWidth <= 768 ? '0.85rem' : '1rem',
-                                transition: 'all 0.2s'
+                                transition: 'all 0.2s',
+                                position: 'relative'
                             }}
                         >
                             <item.icon size={window.innerWidth <= 768 ? 16 : 20} />
                             {item.label}
+                            {item.badge > 0 && (
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    backgroundColor: '#ef4444',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    width: '20px',
+                                    height: '20px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '0.7rem',
+                                    fontWeight: 'bold'
+                                }}>
+                                    {item.badge}
+                                </span>
+                            )}
                         </button>
                     ))}
                 </nav>
@@ -111,6 +129,14 @@ const AdminDashboard = () => {
 
             {/* Main Content */}
             <div style={{ flex: 1, padding: window.innerWidth <= 768 ? '1rem' : '2rem', textAlign: 'left' }}>
+                {/* Notification Banner */}
+                {notifications.length > 0 && (
+                    <NotificationBanner 
+                        notifications={notifications}
+                        onDismiss={markAllAsRead}
+                    />
+                )}
+                
                 {/* Dashboard Tab */}
                 {activeTab === 'dashboard' && (
                     <div>
