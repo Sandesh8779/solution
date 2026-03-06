@@ -1,7 +1,371 @@
-import React, { useState } from 'react';
-import { Search, ArrowRight, Star } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Search, ArrowRight, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../services/mockData';
 import { Link } from 'react-router-dom';
+
+const TestimonialsSlider = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const sliderRef = useRef(null);
+
+    const testimonials = [
+        {
+            id: 1,
+            rating: 4,
+            date: '10th Nov',
+            text: 'Olx has worked very well for me. I am very happy with your services and would like to give this experience a high rating. Thank you!',
+            name: 'Mohd Sakib'
+        },
+        {
+            id: 2,
+            rating: 5,
+            date: '20th Oct',
+            text: 'It is a very good application for buying and selling your second hand products. I sold my Car, Dhokla machine and many things here I also purchased many goods from here, I love to use this application. It is a proud product of #India.',
+            name: 'Divyaraj Champavat'
+        },
+        {
+            id: 3,
+            rating: 5,
+            date: '7th Oct',
+            text: 'Wonderful app if you are in a big city. Very easy interface, just need to be precise to the probable customers and it will be a good experience.',
+            name: 'Rajvir Jhala'
+        },
+        {
+            id: 4,
+            rating: 5,
+            date: '15th Sep',
+            text: 'Great platform for finding reliable professionals. The service quality exceeded my expectations!',
+            name: 'Priya Sharma'
+        },
+        {
+            id: 5,
+            rating: 4,
+            date: '3rd Sep',
+            text: 'Quick response and professional service. Highly recommend for home repairs and maintenance.',
+            name: 'Amit Kumar'
+        }
+    ];
+
+    const scroll = (direction) => {
+        if (direction === 'left') {
+            setCurrentIndex(prev => Math.max(0, prev - 1));
+        } else {
+            setCurrentIndex(prev => Math.min(testimonials.length - 1, prev + 1));
+        }
+    };
+
+    React.useEffect(() => {
+        if (sliderRef.current) {
+            const cardWidth = sliderRef.current.children[0]?.offsetWidth || 0;
+            const gap = 24;
+            sliderRef.current.scrollTo({
+                left: currentIndex * (cardWidth + gap),
+                behavior: 'smooth'
+            });
+        }
+    }, [currentIndex]);
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prev => {
+                if (prev >= testimonials.length - 3) return 0;
+                return prev + 1;
+            });
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [testimonials.length]);
+
+    return (
+        <div style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto' }}>
+            <button
+                onClick={() => scroll('left')}
+                disabled={currentIndex === 0}
+                style={{
+                    position: 'absolute',
+                    left: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex === 0 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronLeft size={24} />
+            </button>
+
+            <div
+                ref={sliderRef}
+                style={{
+                    display: 'flex',
+                    gap: '24px',
+                    overflowX: 'hidden',
+                    scrollBehavior: 'smooth',
+                    padding: '10px'
+                }}
+            >
+                {testimonials.map((testimonial) => (
+                    <div
+                        key={testimonial.id}
+                        style={{
+                            minWidth: window.innerWidth <= 768 ? '100%' : 'calc(33.333% - 16px)',
+                            backgroundColor: 'white',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '16px'
+                        }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {[...Array(5)].map((_, i) => (
+                                <Star
+                                    key={i}
+                                    size={20}
+                                    fill={i < testimonial.rating ? '#fbbf24' : 'none'}
+                                    color='#fbbf24'
+                                />
+                            ))}
+                            <span style={{ marginLeft: '8px', color: '#6b7280', fontSize: '14px' }}>
+                                {testimonial.date}
+                            </span>
+                        </div>
+                        <p style={{ color: '#374151', fontSize: '15px', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
+                            {testimonial.text}
+                        </p>
+                        <p style={{ fontWeight: 600, color: '#111827', margin: 0 }}>
+                            {testimonial.name}
+                        </p>
+                    </div>
+                ))}
+            </div>
+
+            <button
+                onClick={() => scroll('right')}
+                disabled={currentIndex >= testimonials.length - 3}
+                style={{
+                    position: 'absolute',
+                    right: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex >= testimonials.length - 3 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex >= testimonials.length - 3 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronRight size={24} />
+            </button>
+        </div>
+    );
+};
+
+const ProfessionalsSlider = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const sliderRef = useRef(null);
+
+    const professionals = [
+        {
+            id: 1,
+            name: 'Chinnu',
+            role: 'Carpenter',
+            experience: '4 years exp',
+            rating: 4.7,
+            reviews: 62,
+            image: 'https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3'
+        },
+        {
+            id: 2,
+            name: 'Rash Bro',
+            role: 'Plumber',
+            experience: '3 years exp',
+            rating: 4.6,
+            reviews: 89,
+            image: 'https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'
+        },
+        {
+            id: 3,
+            name: 'Ammu Bhai',
+            role: 'Electrician',
+            experience: '5 years exp',
+            rating: 4.9,
+            reviews: 56,
+            image: 'https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247'
+        },
+        {
+            id: 4,
+            name: 'Munna',
+            role: 'Painter',
+            experience: '6 years exp',
+            rating: 4.8,
+            reviews: 34,
+            image: 'https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3'
+        },
+        {
+            id: 5,
+            name: 'Akshu',
+            role: 'Cleaner',
+            experience: '2 years exp',
+            rating: 4.5,
+            reviews: 28,
+            image: 'https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'
+        },
+        {
+            id: 6,
+            name: 'Basaya',
+            role: 'AC Repair',
+            experience: '7 years exp',
+            rating: 4.9,
+            reviews: 12,
+            image: 'https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247'
+        }
+    ];
+
+    const scroll = (direction) => {
+        if (direction === 'left') {
+            setCurrentIndex(prev => Math.max(0, prev - 1));
+        } else {
+            setCurrentIndex(prev => Math.min(professionals.length - 1, prev + 1));
+        }
+    };
+
+    React.useEffect(() => {
+        if (sliderRef.current) {
+            const cardWidth = sliderRef.current.children[0]?.offsetWidth || 0;
+            const gap = 32;
+            sliderRef.current.scrollTo({
+                left: currentIndex * (cardWidth + gap),
+                behavior: 'smooth'
+            });
+        }
+    }, [currentIndex]);
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prev => {
+                if (prev >= professionals.length - 3) return 0;
+                return prev + 1;
+            });
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [professionals.length]);
+
+    return (
+        <div style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto' }}>
+            <button
+                onClick={() => scroll('left')}
+                disabled={currentIndex === 0}
+                style={{
+                    position: 'absolute',
+                    left: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex === 0 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronLeft size={24} />
+            </button>
+
+            <div
+                ref={sliderRef}
+                style={{
+                    display: 'flex',
+                    gap: '32px',
+                    overflowX: 'hidden',
+                    scrollBehavior: 'smooth',
+                    padding: '10px'
+                }}
+            >
+                {professionals.map((pro) => (
+                    <div
+                        key={pro.id}
+                        style={{
+                            minWidth: window.innerWidth <= 768 ? '100%' : 'calc(33.333% - 22px)',
+                            backgroundColor: 'white',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            display: 'flex',
+                            gap: '16px'
+                        }}
+                    >
+                        <img
+                            src={pro.image}
+                            alt={pro.name}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                borderRadius: '8px',
+                                objectFit: 'cover'
+                            }}
+                        />
+                        <div>
+                            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>{pro.name}</h3>
+                            <p style={{ color: '#6b7280', marginBottom: '0.5rem' }}>{pro.role} • {pro.experience}</p>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#fbbf24' }}>
+                                <Star size={16} fill="currentColor" />
+                                <span style={{ fontWeight: 600, color: '#111827' }}>{pro.rating}</span>
+                                <span style={{ color: '#6b7280', fontSize: '0.875rem' }}>({pro.reviews} reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <button
+                onClick={() => scroll('right')}
+                disabled={currentIndex >= professionals.length - 3}
+                style={{
+                    position: 'absolute',
+                    right: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex >= professionals.length - 3 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex >= professionals.length - 3 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronRight size={24} />
+            </button>
+        </div>
+    );
+};
 
 const Home = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -231,99 +595,19 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Testimonials Section */}
+            <section style={{ backgroundColor: '#f8f9fa', padding: '4rem 0' }}>
+                <div className="container">
+                    <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '3rem', fontWeight: 700 }}>What Our Users Say</h2>
+                    <TestimonialsSlider />
+                </div>
+            </section>
+
             {/* Featured Workers Preview (Mock) */}
             <section style={{ backgroundColor: 'var(--color-bg-primary)', padding: '4rem 0' }}>
                 <div className="container">
-                    <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '3rem' }}>Top Rated Professionals</h2>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                        <div style={{
-                            backgroundColor: 'white',
-                            borderRadius: 'var(--radius-lg)',
-                            padding: '1.5rem',
-                            boxShadow: 'var(--shadow-md)',
-                            display: 'flex',
-                            gap: '1rem'
-                        }}>
-                            <img 
-                                src="https://tse3.mm.bing.net/th/id/OIP.pK8r8gXUJr7rC-f_Ik8AMQAAAA?pid=ImgDet&w=184&h=184&c=7&dpr=1.3&o=7&rm=3" 
-                                alt="Chinnu"
-                                style={{ 
-                                    width: 80, 
-                                    height: 80, 
-                                    borderRadius: 'var(--radius-md)', 
-                                    objectFit: 'cover'
-                                }}
-                            />
-                            <div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Chinnu</h3>
-                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Carpenter • 4 years exp</p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
-                                    <Star size={16} fill="currentColor" />
-                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.7</span>
-                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(102 reviews)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style={{
-                            backgroundColor: 'white',
-                            borderRadius: 'var(--radius-lg)',
-                            padding: '1.5rem',
-                            boxShadow: 'var(--shadow-md)',
-                            display: 'flex',
-                            gap: '1rem'
-                        }}>
-                            <img 
-                                src="https://www.bing.com/th/id/OIP.GNC-cPdoCOd0ByTNE9K55wHaHa?w=216&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2" 
-                                alt="Ammu"
-                                style={{ 
-                                    width: 80, 
-                                    height: 80, 
-                                    borderRadius: 'var(--radius-md)', 
-                                    objectFit: 'cover'
-                                }}
-                            />
-                            <div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Rash Bro</h3>
-                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Plumber • 3 years exp</p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
-                                    <Star size={16} fill="currentColor" />
-                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.6</span>
-                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(89 reviews)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style={{
-                            backgroundColor: 'white',
-                            borderRadius: 'var(--radius-lg)',
-                            padding: '1.5rem',
-                            boxShadow: 'var(--shadow-md)',
-                            display: 'flex',
-                            gap: '1rem'
-                        }}>
-                            <img 
-                                src="https://th.bing.com/th?q=Electrician+Working+Hard+Cartoon&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.3&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" 
-                                alt="Banu"
-                                style={{ 
-                                    width: 80, 
-                                    height: 80, 
-                                    borderRadius: 'var(--radius-md)', 
-                                    objectFit: 'cover'
-                                }}
-                            />
-                            <div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Ammu Bhai</h3>
-                                <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Electrician • 5 years exp</p>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--color-warning)' }}>
-                                    <Star size={16} fill="currentColor" />
-                                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>4.9</span>
-                                    <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>(156 reviews)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '3rem', fontWeight: 700 }}>Top Rated Professionals</h2>
+                    <ProfessionalsSlider />
                 </div>
             </section>
         </div>

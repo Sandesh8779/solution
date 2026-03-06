@@ -1,8 +1,181 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, AlertCircle, Eye, EyeOff, ArrowRight, Sparkles, Facebook, Instagram, Youtube, Twitter, Linkedin } from 'lucide-react';
+import { Mail, Lock, AlertCircle, Eye, EyeOff, ArrowRight, Sparkles, Facebook, Instagram, Youtube, Twitter, Linkedin, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Login.css';
+
+const TestimonialsSlider = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const sliderRef = useRef(null);
+
+    const testimonials = [
+        {
+            id: 1,
+            rating: 4,
+            date: '10th Nov',
+            text: 'Olx has worked very well for me. I am very happy with your services and would like to give this experience a high rating. Thank you!',
+            name: 'Mohd Sakib'
+        },
+        {
+            id: 2,
+            rating: 5,
+            date: '20th Oct',
+            text: 'It is a very good application for buying and selling your second hand products. I sold my Car, Dhokla machine and many things here I also purchased many goods from here, I love to use this application. It is a proud product of #India.',
+            name: 'Divyaraj Champavat'
+        },
+        {
+            id: 3,
+            rating: 5,
+            date: '7th Oct',
+            text: 'Wonderful app if you are in a big city. Very easy interface, just need to be precise to the probable customers and it will be a good experience.',
+            name: 'Rajvir Jhala'
+        },
+        {
+            id: 4,
+            rating: 5,
+            date: '15th Sep',
+            text: 'Great platform for finding reliable professionals. The service quality exceeded my expectations!',
+            name: 'Priya Sharma'
+        },
+        {
+            id: 5,
+            rating: 4,
+            date: '3rd Sep',
+            text: 'Quick response and professional service. Highly recommend for home repairs and maintenance.',
+            name: 'Amit Kumar'
+        }
+    ];
+
+    const scroll = (direction) => {
+        if (direction === 'left') {
+            setCurrentIndex(prev => Math.max(0, prev - 1));
+        } else {
+            setCurrentIndex(prev => Math.min(testimonials.length - 1, prev + 1));
+        }
+    };
+
+    React.useEffect(() => {
+        if (sliderRef.current) {
+            const cardWidth = sliderRef.current.children[0]?.offsetWidth || 0;
+            const gap = 24;
+            sliderRef.current.scrollTo({
+                left: currentIndex * (cardWidth + gap),
+                behavior: 'smooth'
+            });
+        }
+    }, [currentIndex]);
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prev => {
+                if (prev >= testimonials.length - 3) return 0;
+                return prev + 1;
+            });
+        }, 2000);
+        return () => clearInterval(interval);
+    }, [testimonials.length]);
+
+    return (
+        <div style={{ position: 'relative', maxWidth: '1400px', margin: '0 auto' }}>
+            <button
+                onClick={() => scroll('left')}
+                disabled={currentIndex === 0}
+                style={{
+                    position: 'absolute',
+                    left: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex === 0 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex === 0 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronLeft size={24} />
+            </button>
+
+            <div
+                ref={sliderRef}
+                style={{
+                    display: 'flex',
+                    gap: '24px',
+                    overflowX: 'hidden',
+                    scrollBehavior: 'smooth',
+                    padding: '10px'
+                }}
+            >
+                {testimonials.map((testimonial) => (
+                    <div
+                        key={testimonial.id}
+                        style={{
+                            minWidth: window.innerWidth <= 768 ? '100%' : 'calc(33.333% - 16px)',
+                            backgroundColor: 'white',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '16px'
+                        }}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {[...Array(5)].map((_, i) => (
+                                <Star
+                                    key={i}
+                                    size={20}
+                                    fill={i < testimonial.rating ? '#fbbf24' : 'none'}
+                                    color='#fbbf24'
+                                />
+                            ))}
+                            <span style={{ marginLeft: '8px', color: '#6b7280', fontSize: '14px' }}>
+                                {testimonial.date}
+                            </span>
+                        </div>
+                        <p style={{ color: '#374151', fontSize: '15px', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
+                            {testimonial.text}
+                        </p>
+                        <p style={{ fontWeight: 600, color: '#111827', margin: 0 }}>
+                            {testimonial.name}
+                        </p>
+                    </div>
+                ))}
+            </div>
+
+            <button
+                onClick={() => scroll('right')}
+                disabled={currentIndex >= testimonials.length - 3}
+                style={{
+                    position: 'absolute',
+                    right: '-20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    zIndex: 10,
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    cursor: currentIndex >= testimonials.length - 3 ? 'not-allowed' : 'pointer',
+                    opacity: currentIndex >= testimonials.length - 3 ? 0.5 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <ChevronRight size={24} />
+            </button>
+        </div>
+    );
+};
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -159,52 +332,13 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Footer */}
-            <div className="login-footer">
-                <div className="footer-top">
-                    <div className="footer-column">
-                        <h3>POPULAR LOCATIONS</h3>
-                        <a href="https://www.google.com/maps/search/Bangalore,+India" target="_blank" rel="noopener noreferrer">Bangalore</a>
-                        <a href="https://www.google.com/maps/search/Mumbai,+India" target="_blank" rel="noopener noreferrer">Mumbai</a>
-                        <a href="https://www.google.com/maps/search/Delhi,+India" target="_blank" rel="noopener noreferrer">Delhi</a>
-                        <a href="https://www.google.com/maps/search/Hyderabad,+India" target="_blank" rel="noopener noreferrer">Hyderabad</a>
-                    </div>
-                    <div className="footer-column">
-                        <h3>TRENDING SERVICES</h3>
-                        <Link to="/services?search=Plumber">Plumber</Link>
-                        <Link to="/services?search=Electrician">Electrician</Link>
-                        <Link to="/services?search=Carpenter">Carpenter</Link>
-                        <Link to="/services?search=Painter">Painter</Link>
-                    </div>
-                    <div className="footer-column">
-                        <h3>ABOUT US</h3>
-                        <Link to="/about">About Solution For U</Link>
-                        <Link to="/about#contact">Contact Us</Link>
-                    </div>
+            {/* Testimonials Section */}
+            <section style={{ backgroundColor: '#f8f9fa', padding: '4rem 0', position: 'relative', zIndex: 1 }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
+                    <h2 style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '3rem', fontWeight: 700 }}>What Our Users Say</h2>
+                    <TestimonialsSlider />
                 </div>
-                <div className="footer-bottom">
-                    <div className="footer-bottom-content">
-                        <div className="footer-social">
-                            <span>Follow Us</span>
-                            <div className="social-icons">
-                                <div className="social-icon" style={{ backgroundColor: '#1877f2' }}><Facebook size={20} /></div>
-                                <div className="social-icon" style={{ background: 'linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)' }}><Instagram size={20} /></div>
-                                <div className="social-icon" style={{ backgroundColor: '#ff0000' }}><Youtube size={20} /></div>
-                                <div className="social-icon" style={{ backgroundColor: '#000' }}><Twitter size={20} /></div>
-                                <div className="social-icon" style={{ backgroundColor: '#25d366' }}>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                                    </svg>
-                                </div>
-                                <div className="social-icon" style={{ backgroundColor: '#0077b5' }}><Linkedin size={20} /></div>
-                            </div>
-                        </div>
-                        <div className="footer-copyright">
-                            <span>All rights reserved © 2026 Solution For U</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     );
 };
