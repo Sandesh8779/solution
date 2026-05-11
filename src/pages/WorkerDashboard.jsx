@@ -28,6 +28,15 @@ const WorkerDashboard = () => {
         if (user) loadRequests();
     }, [user]);
 
+    useEffect(() => {
+        if (!user) return;
+        if (activeTab === 'completed' || activeTab === 'assigned' || activeTab === 'pending') {
+            getRequests().then(all => {
+                setRequests(all.filter(r => r.worker_id === user.id));
+            }).catch(console.error);
+        }
+    }, [activeTab]);
+
     const acceptRequest = async (requestId) => {
         try {
             await updateRequest(requestId, { 
@@ -482,13 +491,13 @@ const WorkerDashboard = () => {
                 {activeTab === 'completed' && (
                     <div>
                         <h1 style={{ marginBottom: '1.5rem' }}>Completed Work</h1>
-                        {requests.filter(r => r.status === 'completed' && r.verification_status !== 'approved').length === 0 ? (
+                        {requests.filter(r => r.status === 'completed').length === 0 ? (
                             <div style={{ textAlign: 'center', padding: '4rem', backgroundColor: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
                                 <p style={{ color: 'var(--color-text-secondary)' }}>No completed work yet</p>
                             </div>
                         ) : (
                             <div style={{ display: 'grid', gap: '1.5rem' }}>
-                                {requests.filter(r => r.status === 'completed' && r.verification_status !== 'approved').map((request) => (
+                                {requests.filter(r => r.status === 'completed').map((request) => (
                                     <div key={request.id} style={{
                                         backgroundColor: 'white',
                                         padding: '2rem',
@@ -522,76 +531,82 @@ const WorkerDashboard = () => {
                                         </div>
 
                                         <div style={{ padding: '1rem', backgroundColor: '#f0fdf4', borderRadius: 'var(--radius-md)' }}>
-                                            <h4 style={{ margin: '0 0 1rem 0', color: 'var(--color-success)' }}>Upload Work Photos/Videos</h4>
-                                            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                                                <label style={{
-                                                    padding: '0.75rem 1rem',
-                                                    backgroundColor: 'var(--color-success)',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: 'var(--radius-md)',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.5rem'
-                                                }}>
-                                                    <Camera size={18} />
-                                                    Add Photos
-                                                    <input 
-                                                        type="file" 
-                                                        accept="image/*" 
-                                                        multiple 
-                                                        style={{ display: 'none' }}
-                                                        onChange={(e) => handleFileUpload(request.id, e.target.files, 'photos')}
-                                                    />
-                                                </label>
-                                                <label style={{
-                                                    padding: '0.75rem 1rem',
-                                                    backgroundColor: 'var(--color-primary)',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    borderRadius: 'var(--radius-md)',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.5rem'
-                                                }}>
-                                                    <Upload size={18} />
-                                                    Add Videos
-                                                    <input 
-                                                        type="file" 
-                                                        accept="video/*" 
-                                                        multiple 
-                                                        style={{ display: 'none' }}
-                                                        onChange={(e) => handleFileUpload(request.id, e.target.files, 'videos')}
-                                                    />
-                                                </label>
-                                            </div>
-                                            {(request.photos && request.photos.length > 0) || (request.videos && request.videos.length > 0) ? (
-                                                request.verification_status === 'submitted' ? (
-                                                    <p style={{ color: 'var(--color-warning)', fontStyle: 'italic', fontWeight: 'bold' }}>
-                                                        Work submitted for admin verification - waiting for approval
-                                                    </p>
-                                                ) : (
-                                                    <button 
-                                                        onClick={() => submitForVerification(request.id)}
-                                                        style={{
-                                                            padding: '0.75rem 1.5rem',
-                                                            backgroundColor: 'var(--color-warning)',
+                                            <h4 style={{ margin: '0 0 1rem 0', color: 'var(--color-success)' }}>Verification Status</h4>
+                                            {request.verification_status === 'approved' ? (
+                                                <p style={{ color: '#065f46', fontWeight: 'bold', margin: 0, fontSize: '1rem' }}>
+                                                    ✅ Work verified and approved by admin
+                                                </p>
+                                            ) : request.verification_status === 'submitted' ? (
+                                                <p style={{ color: '#92400e', fontStyle: 'italic', fontWeight: 'bold', margin: 0 }}>
+                                                    ⏳ Work submitted for admin verification - waiting for approval
+                                                </p>
+                                            ) : (
+                                                <>
+                                                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                                                        <label style={{
+                                                            padding: '0.75rem 1rem',
+                                                            backgroundColor: 'var(--color-success)',
                                                             color: 'white',
                                                             border: 'none',
                                                             borderRadius: 'var(--radius-md)',
                                                             cursor: 'pointer',
-                                                            fontWeight: 'bold'
-                                                        }}
-                                                    >
-                                                        Submit for Verification
-                                                    </button>
-                                                )
-                                            ) : (
-                                                <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic' }}>
-                                                    Upload photos or videos to submit for verification
-                                                </p>
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '0.5rem'
+                                                        }}>
+                                                            <Camera size={18} />
+                                                            Add Photos
+                                                            <input
+                                                                type="file"
+                                                                accept="image/*"
+                                                                multiple
+                                                                style={{ display: 'none' }}
+                                                                onChange={(e) => handleFileUpload(request.id, e.target.files, 'photos')}
+                                                            />
+                                                        </label>
+                                                        <label style={{
+                                                            padding: '0.75rem 1rem',
+                                                            backgroundColor: 'var(--color-primary)',
+                                                            color: 'white',
+                                                            border: 'none',
+                                                            borderRadius: 'var(--radius-md)',
+                                                            cursor: 'pointer',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '0.5rem'
+                                                        }}>
+                                                            <Upload size={18} />
+                                                            Add Videos
+                                                            <input
+                                                                type="file"
+                                                                accept="video/*"
+                                                                multiple
+                                                                style={{ display: 'none' }}
+                                                                onChange={(e) => handleFileUpload(request.id, e.target.files, 'videos')}
+                                                            />
+                                                        </label>
+                                                    </div>
+                                                    {(request.photos && request.photos.length > 0) || (request.videos && request.videos.length > 0) ? (
+                                                        <button
+                                                            onClick={() => submitForVerification(request.id)}
+                                                            style={{
+                                                                padding: '0.75rem 1.5rem',
+                                                                backgroundColor: 'var(--color-warning)',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                                borderRadius: 'var(--radius-md)',
+                                                                cursor: 'pointer',
+                                                                fontWeight: 'bold'
+                                                            }}
+                                                        >
+                                                            Submit for Verification
+                                                        </button>
+                                                    ) : (
+                                                        <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', margin: 0 }}>
+                                                            Upload photos or videos to submit for verification
+                                                        </p>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     </div>

@@ -9,6 +9,25 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+// Ensure user_rating column exists on app start
+;(async () => {
+  try {
+    // Try a test update with user_rating to see if column exists
+    // If it fails with 'column does not exist', we need to add it
+    const { error } = await supabase
+      .from('requests')
+      .update({ user_rating: null })
+      .eq('id', '00000000-0000-0000-0000-000000000000') // fake id, won't match anything
+      .select('id')
+    
+    if (error && error.message && error.message.includes('user_rating')) {
+      console.warn('user_rating column missing. Please run in Supabase SQL Editor:\nALTER TABLE public.requests ADD COLUMN IF NOT EXISTS user_rating integer;')
+    }
+  } catch (e) {
+    // ignore
+  }
+})()
+
 // Auth functions that check Supabase database
 export const signIn = async (email, password) => {
   try {
@@ -167,6 +186,20 @@ export const updateRequest = async (id, updates) => {
   const { data, error } = await supabase.from('requests').update(updates).eq('id', id).select().single()
   if (error) throw error
   return data
+}
+
+export const rateRequest = async (id, rating) => {
+  const { data, error } = await supabase
+    .from('requests')
+    .update({ user_rating: rating })
+    .eq('id', id)
+    .select('id, user_rating')
+    .single();
+  if (error) {
+    console.error('rateRequest DB error:', error.message);
+    throw error;
+  }
+  return data;
 }
 
 export const assignWorkerToRequest = async (requestId, workerId) => {

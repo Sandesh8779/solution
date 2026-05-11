@@ -15,17 +15,47 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [modalMedia, setModalMedia] = useState(null);
     const [contactMessages, setContactMessages] = useState([]);
+    const [unreadMsgCount, setUnreadMsgCount] = useState(0);
+
+    const getSeenMsgIds = () => {
+        try { return new Set(JSON.parse(localStorage.getItem(`sfu_seen_msgs_${user?.id}`) || '[]')); }
+        catch { return new Set(); }
+    };
+    const saveSeenMsgIds = (ids) => {
+        localStorage.setItem(`sfu_seen_msgs_${user?.id}`, JSON.stringify([...ids]));
+    };
 
     useEffect(() => {
-        // Load contact messages from database when messages tab is active
         if (activeTab === 'messages') {
             getContactMessages().then(messages => {
                 setContactMessages(messages);
+                // Mark all current messages as seen
+                const seenIds = getSeenMsgIds();
+                messages.forEach(m => seenIds.add(m.id));
+                saveSeenMsgIds(seenIds);
+                setUnreadMsgCount(0);
             }).catch(error => {
                 console.error('Error loading messages:', error);
             });
         }
+        if (activeTab === 'verification' || activeTab === 'completed' || activeTab === 'service-completed') {
+            getRequests().then(data => setRequests(data)).catch(console.error);
+            // Auto-refresh every 15s so user ratings appear without manual tab switch
+            const interval = setInterval(() => {
+                getRequests().then(data => setRequests(data)).catch(console.error);
+            }, 15000);
+            return () => clearInterval(interval);
+        }
     }, [activeTab]);
+
+    // Compute unread message badge on mount
+    useEffect(() => {
+        if (!user) return;
+        getContactMessages().then(messages => {
+            const seenIds = getSeenMsgIds();
+            setUnreadMsgCount(messages.filter(m => !seenIds.has(m.id)).length);
+        }).catch(() => {});
+    }, [user]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -62,7 +92,7 @@ const AdminDashboard = () => {
 
     const sidebarItems = [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-        { id: 'messages', label: 'Contact Messages', icon: MessageCircle, badge: contactMessages.length },
+        { id: 'messages', label: 'Contact Messages', icon: MessageCircle, badge: unreadMsgCount },
         { id: 'requests', label: 'User Requests', icon: FileText },
         { id: 'assignments', label: 'Work Assignments', icon: UserCheck },
         { id: 'verification', label: 'Work Verification', icon: CheckCircle },
@@ -597,7 +627,15 @@ const AdminDashboard = () => {
                 {/* Completed Work Tab */}
                 {activeTab === 'completed' && (
                     <div>
-                        <h1 style={{ marginBottom: '1.5rem', textAlign: 'left' }}>Completed Work</h1>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                            <h1 style={{ margin: 0, textAlign: 'left' }}>Completed Work</h1>
+                            <button
+                                onClick={() => getRequests().then(data => setRequests(data)).catch(console.error)}
+                                style={{ padding: '0.5rem 1.25rem', backgroundColor: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', cursor: 'pointer', fontWeight: 600, fontSize: '0.9rem' }}
+                            >
+                                🔄 Refresh Ratings
+                            </button>
+                        </div>
                         {requests.filter(r => r.status === 'completed').length === 0 ? (
                             <p style={{ textAlign: 'left', color: 'var(--color-text-secondary)' }}>No completed work found</p>
                         ) : (
@@ -658,7 +696,21 @@ const AdminDashboard = () => {
                                                         <p><strong>Name:</strong> {worker?.name}</p>
                                                         <p><strong>Service:</strong> {worker?.service_type}</p>
                                                         <p><strong>Phone:</strong> {worker?.phone}</p>
-                                                        <p><strong>Rating:</strong> {worker?.rating}/5.0</p>
+                                                        <p style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                            <strong>User Rating:</strong>
+                                                            {request.user_rating ? (
+                                                                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                                    <span style={{ color: '#f59e0b', fontSize: '1.1rem', letterSpacing: '2px' }}>
+                                                                        {'★'.repeat(request.user_rating)}{'☆'.repeat(5 - request.user_rating)}
+                                                                    </span>
+                                                                    <span style={{ fontWeight: 700, color: '#92400e', fontSize: '0.95rem' }}>
+                                                                        {request.user_rating}/5
+                                                                    </span>
+                                                                </span>
+                                                            ) : (
+                                                                <span style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic', fontSize: '0.88rem' }}>Not rated yet</span>
+                                                            )}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>

@@ -38,6 +38,165 @@ export const MOCK_USERS = [
     }
 ];
 
+export const SERVICE_DETAILS = {
+    'carpenter': {
+        description: 'Expert carpenters for furniture making, wood repairs, door/window fitting, and custom woodwork at your home.',
+        type: 'Home Repair & Renovation',
+        priceRange: '₹500 – ₹5,000',
+        priceNote: 'Price varies based on work complexity and materials used.'
+    },
+    'gas-pipeline': {
+        description: 'Certified technicians for safe gas pipeline installation, leak detection, and repairs.',
+        type: 'Safety & Infrastructure',
+        priceRange: '₹800 – ₹4,000',
+        priceNote: 'Price depends on pipeline length and type of work.'
+    },
+    'gas-repair': {
+        description: 'Quick and safe gas appliance repair services by trained professionals.',
+        type: 'Appliance Repair',
+        priceRange: '₹300 – ₹2,000',
+        priceNote: 'Diagnosis charge may apply separately.'
+    },
+    'electrician': {
+        description: 'Licensed electricians for wiring, installations, switchboard repairs, and electrical maintenance.',
+        type: 'Electrical Services',
+        priceRange: '₹400 – ₹6,000',
+        priceNote: 'Price varies based on work scope and parts required.'
+    },
+    'painter': {
+        description: 'Professional painters for interior and exterior painting, wall textures, and waterproofing.',
+        type: 'Home Improvement',
+        priceRange: '₹10 – ₹25 per sq.ft',
+        priceNote: 'Final price depends on area size and paint quality.'
+    },
+    'home-cleaner': {
+        description: 'Thorough home deep cleaning including floors, kitchen, and living areas by trained staff.',
+        type: 'Cleaning Services',
+        priceRange: '₹1,000 – ₹4,000',
+        priceNote: 'Price based on home size (1BHK, 2BHK, 3BHK, etc.).'
+    },
+    'bathroom-cleaner': {
+        description: 'Deep bathroom cleaning, tile scrubbing, sanitization, and odor removal.',
+        type: 'Cleaning Services',
+        priceRange: '₹400 – ₹1,500',
+        priceNote: 'Price per bathroom; discounts for multiple bathrooms.'
+    },
+    'plumber': {
+        description: 'Expert plumbers for pipe leaks, tap repairs, drainage issues, and bathroom fittings.',
+        type: 'Plumbing Services',
+        priceRange: '₹300 – ₹3,000',
+        priceNote: 'Price depends on issue type and parts needed.'
+    },
+    'motor-repair': {
+        description: 'Water motor and pump repair, rewinding, and replacement services.',
+        type: 'Appliance Repair',
+        priceRange: '₹500 – ₹3,500',
+        priceNote: 'Includes inspection; parts charged separately.'
+    },
+    'tank-sump-cleaner': {
+        description: 'Professional overhead tank and underground sump cleaning and disinfection.',
+        type: 'Cleaning Services',
+        priceRange: '₹800 – ₹3,000',
+        priceNote: 'Price based on tank/sump capacity.'
+    },
+    'washing-machine-repair': {
+        description: 'Repair and servicing of all washing machine brands — front load and top load.',
+        type: 'Appliance Repair',
+        priceRange: '₹400 – ₹2,500',
+        priceNote: 'Spare parts charged extra if required.'
+    },
+    'welding': {
+        description: 'Metal welding, gate fabrication, grill repair, and structural welding work.',
+        type: 'Fabrication & Repair',
+        priceRange: '₹500 – ₹5,000',
+        priceNote: 'Price based on material and work hours.'
+    },
+    'ac-repair': {
+        description: 'AC servicing, gas refilling, installation, and repair for all brands.',
+        type: 'Appliance Repair',
+        priceRange: '₹500 – ₹4,000',
+        priceNote: 'Gas refill and parts charged separately.'
+    },
+    'water-purifier': {
+        description: 'Water purifier installation, filter replacement, and repair for all brands.',
+        type: 'Appliance Services',
+        priceRange: '₹300 – ₹2,000',
+        priceNote: 'Filters and parts charged extra.'
+    },
+    'refrigerator-repair': {
+        description: 'Refrigerator repair, gas charging, thermostat replacement for all brands.',
+        type: 'Appliance Repair',
+        priceRange: '₹500 – ₹3,500',
+        priceNote: 'Spare parts charged separately.'
+    },
+    'laptop-desktop-repair': {
+        description: 'Laptop and desktop repair, OS installation, hardware upgrades, and data recovery.',
+        type: 'Electronics Repair',
+        priceRange: '₹500 – ₹5,000',
+        priceNote: 'Price depends on issue; parts extra.'
+    },
+    'microwave-repair': {
+        description: 'Microwave oven repair and servicing for all brands and models.',
+        type: 'Appliance Repair',
+        priceRange: '₹400 – ₹2,000',
+        priceNote: 'Parts charged separately if needed.'
+    },
+    'tv-repair': {
+        description: 'TV repair, wall mounting, and installation for LED, LCD, and Smart TVs.',
+        type: 'Electronics Services',
+        priceRange: '₹400 – ₹3,000',
+        priceNote: 'Parts and mounting hardware charged extra.'
+    },
+    'chimney-repair': {
+        description: 'Kitchen chimney cleaning, repair, and installation services.',
+        type: 'Appliance Services',
+        priceRange: '₹500 – ₹2,500',
+        priceNote: 'Filter replacement charged separately.'
+    },
+    'gas-geyser': {
+        description: 'Gas geyser installation, repair, and servicing by certified technicians.',
+        type: 'Appliance Services',
+        priceRange: '₹400 – ₹2,500',
+        priceNote: 'Parts and gas charged separately.'
+    },
+    'dish-washer': {
+        description: 'Dishwasher installation, repair, and maintenance for all brands.',
+        type: 'Appliance Repair',
+        priceRange: '₹500 – ₹3,000',
+        priceNote: 'Spare parts charged extra.'
+    },
+    'geyser': {
+        description: 'Electric geyser installation, repair, and element replacement.',
+        type: 'Appliance Services',
+        priceRange: '₹300 – ₹2,000',
+        priceNote: 'Parts charged separately.'
+    },
+    'water-level-controller': {
+        description: 'Water level controller installation, wiring, and repair services.',
+        type: 'Electrical Services',
+        priceRange: '₹500 – ₹2,500',
+        priceNote: 'Device cost extra if replacement needed.'
+    },
+    'inverter-ups': {
+        description: 'Inverter and UPS installation, battery replacement, and repair.',
+        type: 'Electrical Services',
+        priceRange: '₹500 – ₹4,000',
+        priceNote: 'Battery cost charged separately.'
+    },
+    'solar-water-heater': {
+        description: 'Solar water heater installation, repair, and maintenance services.',
+        type: 'Green Energy Services',
+        priceRange: '₹1,000 – ₹6,000',
+        priceNote: 'Price based on system size and issue.'
+    },
+    'cooking-range': {
+        description: 'Cooking range and gas stove repair, burner cleaning, and part replacement.',
+        type: 'Appliance Repair',
+        priceRange: '₹300 – ₹2,000',
+        priceNote: 'Parts charged separately.'
+    }
+};
+
 export const SERVICE_CATEGORIES = [
     { id: 'carpenter', name: 'Carpenter', icon: 'Hammer', image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400' },
     { id: 'gas-pipeline', name: 'Gas Pipeline', icon: 'Flame', image: '/images/gas-pipeline.jpg' },
